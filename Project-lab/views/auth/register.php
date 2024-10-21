@@ -6,16 +6,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = htmlspecialchars($_POST['email'], ENT_QUOTES);
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-    $stmt = $mysqli->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-    $stmt->bind_param('sss', $username, $email, $password);
-    
-    if ($stmt->execute()) {
-        header("Location: login.php");
+    $checkEmail = $mysqli->prepare("SELECT id FROM users WHERE email = ?");
+    $checkEmail->bind_param('s', $email);
+    $checkEmail->execute();
+    $checkEmail->store_result();
+
+    if ($checkEmail->num_rows > 0) {
+        echo "Email sudah digunakan, silakan gunakan email lain.";
     } else {
-        echo "Error: " . $stmt->error;
+        $stmt = $mysqli->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+        $stmt->bind_param('sss', $username, $email, $password);
+        
+        if ($stmt->execute()) {
+            header("Location: login.php");
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
     }
 
-    $stmt->close();
+    $checkEmail->close();
     $mysqli->close();
 }
 ?>
