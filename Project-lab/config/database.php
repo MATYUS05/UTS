@@ -1,13 +1,14 @@
 <?php
-$host = 'localhost';
-$db = 'todo_list'; 
-$user = 'root'; 
-$pass = ''; 
+$host = 'localhost:3306';
+$user = 'root'; // Username MySQL
+$password = ''; // Password MySQL 
+$dbname = 'todolist'; 
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Could not connect to the database: " . $e->getMessage());
+$mysqli = new mysqli($host, $user, $password, $dbname);
+
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
 }
+
+$mysqli->set_charset("utf8mb4");
 ?>
