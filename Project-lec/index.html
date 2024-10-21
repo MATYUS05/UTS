@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-[Poppins] bg-white h-screen">
+    <header class="bg-white">
+        <nav class="flex items-center justify-between h-20 w-9/12 mx-auto">
+            <div> 
+                <h1>GatherCraft</h1>
+            </div>
+            <div class="flex items-center">
+                <ul class="flex flex-row items-center gap-14">
+                    <li>
+                        <a class="px-4 py-1 hover:text-blue-600 transition ease-in-out delay-75" href="#">Home</a>
+                    </li>
+                    <li>
+                        <a class="px-4 py-1 hover:text-blue-600 transition ease-in-out delay-75" href="#">About</a>
+                    </li>
+                    <li>
+                        <a class="px-4 py-1 hover:text-blue-600 transition ease-in-out delay-75" href="#">Contact</a>
+                    </li>
+                    <li>
+                        <a href="login.html">
+                        <button class="border-2 border-indigo-600 px-4 py-1 rounded-full hover:border-blue-300 transition ease-in-out delay-100">Login</button>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="flex flex-col items-center justify-center text-center h-[80vh]">
+        <h1 class="text-5xl font-bold mb-4">SELAMAT DATANG DI GATHERCRAFT</h1>
+        <p class="text-2xl mb-2"><span class="auto-type"></span></p>
+        <p class="mt-4 mb-4">Belum ada akun?
+            <button class="border-2 border-indigo-600 px-4 py-1 rounded-full hover:border-blue-300 transition ease-in-out delay-100">Sign Up</button> Now!!
+        </p>
+    </div>
+
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script>
+        var typed = new Typed(".auto-type" , {
+            strings : 
+                    ["Jelajahi Event Favoritmu Sekarang!!",
+                    "Discover Your Perfect Event Here!!",
+                    "Raih Momen Spesial di Event Pilihanmu!!"
+                    ],   
+            typeSpeed: 50,      
+            backSpeed: 50,      
+            loop: true,        
+            startDelay: 500,    
+            backDelay: 1000,    
+        })
+    </script>
+
+</body>
+</html>
