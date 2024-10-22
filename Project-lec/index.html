@@ -8,23 +8,36 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .text-outline {
+            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.7), -1px -1px 0 rgba(255, 255, 255, 0.7),
+                         1px -1px 0 rgba(255, 255, 255, 0.7), -1px 1px 0 rgba(255, 255, 255, 0.7);
+        }
+    </style>
 </head>
-<body class="font-[Poppins] bg-white h-screen">
+<body class="font-[Poppins] bg-cover bg-center h-screen" style="background-image: url('Image/login.webp');">
     <header class="bg-white">
-        <nav class="flex items-center justify-between h-20 w-9/12 mx-auto">
+        <nav class="flex items-center justify-between h-20 w-9/12 mx-auto relative">
             <div> 
-                <h1>GatherCraft</h1>
+                <h1 class="text-blue-800">GatherCraft</h1>
             </div>
-            <div class="flex items-center">
-                <ul class="flex flex-row items-center gap-14">
+            <div class="flex items-center md:hidden">
+                <button id="hamburger" class="focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="menu" class="hidden md:flex md:items-center md:gap-14 absolute md:static top-20 right-0 w-full md:w-auto bg-white z-10">
+                <ul class="flex flex-col md:flex-row items-center gap-4 md:gap-14">
                     <li>
-                        <a class="px-4 py-1 hover:text-blue-600 transition ease-in-out delay-75" href="#">Home</a>
+                        <a class="px-4 py-1 text-blue-800 hover:text-blue-300 transition ease-in-out delay-75" href="#">Home</a>
                     </li>
                     <li>
-                        <a class="px-4 py-1 hover:text-blue-600 transition ease-in-out delay-75" href="#">About</a>
+                        <a class="px-4 py-1 text-blue-800 hover:text-blue-300 transition ease-in-out delay-75" href="#">About</a>
                     </li>
                     <li>
-                        <a class="px-4 py-1 hover:text-blue-600 transition ease-in-out delay-75" href="#">Contact</a>
+                        <a class="px-4 py-1 text-blue-800 hover:text-blue-300 transition ease-in-out delay-75" href="#">Contact</a>
                     </li>
                     <li>
                         <a href="login.html">
@@ -36,28 +49,31 @@
         </nav>
     </header>
     <div class="flex flex-col items-center justify-center text-center h-[80vh]">
-        <h1 class="text-5xl font-bold mb-4">SELAMAT DATANG DI GATHERCRAFT</h1>
-        <p class="text-2xl mb-2"><span class="auto-type"></span></p>
-        <p class="mt-4 mb-4">Belum ada akun?
+        <h1 class="text-5xl font-bold text-blue-800 text-outline mb-4">SELAMAT DATANG DI GATHERCRAFT</h1>
+        <p class="text-2xl text-blue-800 text-outline mb-2"><span class="auto-type"></span></p>
+        <p class="mt-4 mb-4 text-blue-800 text-outline">Belum ada akun?
             <a href="signup.html">
-            <button class="border-2 border-indigo-600 px-4 py-1 rounded-full hover:border-blue-300 transition ease-in-out delay-100">Sign Up</button></a> Now!!
+            <button class="border-2 border-indigo-600 px-4 py-1 rounded-full hover:border-blue-300 transition ease-in-out delay-100 text-blue-800 text-outline">Sign Up</button></a> Now!!
         </p>
     </div>
 
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script>
-        var typed = new Typed(".auto-type" , {
-            strings : 
-                    ["Jelajahi Event Favoritmu Sekarang!!",
-                    "Discover Your Perfect Event Here!!",
-                    "Raih Momen Spesial di Event Pilihanmu!!"
-                    ],   
-            typeSpeed: 50,      
-            backSpeed: 50,      
-            loop: true,        
-            startDelay: 500,    
-            backDelay: 1000,    
-        })
+        var typed = new Typed(".auto-type", {
+            strings: ["Jelajahi Event Favoritmu Sekarang!!", "Discover Your Perfect Event Here!!", "Raih Momen Spesial di Event Pilihanmu!!"],
+            typeSpeed: 50,
+            backSpeed: 50,
+            loop: true,
+            startDelay: 500,
+            backDelay: 1000,
+        });
+
+        const hamburger = document.getElementById('hamburger');
+        const menu = document.getElementById('menu');
+
+        hamburger.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
     </script>
 
 </body>
