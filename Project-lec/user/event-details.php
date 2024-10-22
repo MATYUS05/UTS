@@ -5,7 +5,6 @@ require '../config/database.php';
 if (isset($_GET['id'])) {
     $eventId = $_GET['id'];
 
-    // Ambil detail event
     $stmt = $pdo->prepare("SELECT * FROM events WHERE id = ?");
     $stmt->execute([$eventId]);
     $event = $stmt->fetch();

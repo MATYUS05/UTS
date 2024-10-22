@@ -6,13 +6,11 @@ if (isset($_GET['id']) && isset($_SESSION['user_id'])) {
     $eventId = $_GET['id'];
     $userId = $_SESSION['user_id'];
 
-    // Cek apakah pengguna sudah terdaftar untuk event ini
     $stmt = $pdo->prepare("SELECT * FROM registrants WHERE user_id = ? AND event_id = ?");
     $stmt->execute([$userId, $eventId]);
     $alreadyRegistered = $stmt->fetch();
 
     if (!$alreadyRegistered) {
-        // Daftarkan pengguna untuk event
         $stmt = $pdo->prepare("INSERT INTO registrants (user_id, event_id) VALUES (?, ?)");
         $stmt->execute([$userId, $eventId]);
 
