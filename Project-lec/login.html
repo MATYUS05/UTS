@@ -18,12 +18,13 @@
             <!--form-->
             <div class="sm:w-1/2 px-16">
                 <h2 class="font-bold text-2xl text-blue-600">Sign In</h2>
-                <p class="text-xs mt-2">Jika anda sudah punya akun, tinggal lanngsung login</p>
+                <p class="text-xs mt-2">Jika anda sudah punya akun, tinggal langsung login</p>
 
-                <form action="" class="flex flex-col gap-4">
-                     <input class="p-2 mt-6 rounded-xl border" type="email" placeholder="Email">
-                     <input class="p-2 rounded-xl border" type="password" placeholder="Password">
-                     <button class="bg-blue-600 hover:bg-blue-300 rounded-xl text-white py-2">Login</button>
+                <!-- Update form with method and action -->
+                <form action="login.php" method="POST" class="flex flex-col gap-4">
+                    <input class="p-2 mt-6 rounded-xl border" type="email" name="email" placeholder="Email" required>
+                    <input class="p-2 rounded-xl border" type="password" name="password" placeholder="Password" required>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-300 rounded-xl text-white py-2">Login</button>
                 </form>
 
                 <div class="mt-10 grid grid-cols-3 items-center">
@@ -37,7 +38,7 @@
                 <div class="mt-2 text-xs flex items-center justify-between">
                     <p>Belum punya akun?</p>
                     <a href="signup.html">
-                    <button class=" py-2 px-5 bg-white border rounded-xl hover:bg-blue-600 hover:text-white transtion ease-in-out delay-75">Register</button>
+                        <button class="py-2 px-5 bg-white border rounded-xl hover:bg-blue-600 hover:text-white transition ease-in-out delay-75">Register</button>
                     </a>
                 </div>
             </div>

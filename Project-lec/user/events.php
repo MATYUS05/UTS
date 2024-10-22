@@ -2,7 +2,7 @@
 session_start();
 require '../config/database.php';
 
-// Ambil daftar event
+
 $stmt = $pdo->prepare("SELECT * FROM events");
 $stmt->execute();
 $events = $stmt->fetchAll();

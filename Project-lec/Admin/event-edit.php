@@ -9,7 +9,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
 
 $event_id = $_GET['id'];
 
-// Ambil detail event untuk diedit
 $stmt = $pdo->prepare("SELECT * FROM events WHERE id = ?");
 $stmt->execute([$event_id]);
 $event = $stmt->fetch();
@@ -28,7 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $max_participants = intval($_POST['max_participants']);
     $status = $_POST['status'];
 
-    // File upload handling (optional)
     if (isset($_FILES['banner_image']) && $_FILES['banner_image']['size'] > 0) {
         $banner_image = $_FILES['banner_image']['name'];
         $target = '../uploads/' . basename($banner_image);

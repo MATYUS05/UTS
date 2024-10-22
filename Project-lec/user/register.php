@@ -11,26 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
     $stmt->execute([$name, $email, $password]);
 
-    echo "User registered successfully!";
+    // Redirect ke halaman login setelah berhasil registrasi
     header("Location: login.php");
+    exit;
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>User Registration</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-</head>
-<body>
-    <h1>User Registration</h1>
-    <form method="POST">
-        <input type="text" name="name" placeholder="Name" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Register</button>
-    </form>
-    <a href="login.php">Already have an account? Login here</a>
-</body>
-</html>
