@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . "/config/database.php"; // Pastikan path ini benar 
+require_once '../config/database.php';
 session_start();
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
@@ -29,19 +29,31 @@ if (isset($_POST['export'])) {
 }
 ?>
 
-<h1>Registrants for Event</h1>
-<form method="POST">
-    <button type="submit" name="export">Export to CSV</button>
-</form>
-<table border="1">
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-    </tr>
-    <?php foreach ($registrants as $registrant): ?>
-        <tr>
-            <td><?php echo htmlspecialchars($registrant['name']); ?></td>
-            <td><?php echo htmlspecialchars($registrant['email']); ?></td>
-        </tr>
-    <?php endforeach; ?>
-</table>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrants</title>
+</head>
+<body>
+    <h1>Registrants</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Registration Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($registrants as $registrant): ?>
+            <tr>
+                <td><?= $registrant['username']; ?></td>
+                <td><?= $registrant['email']; ?></td>
+                <td><?= $registrant['registration_date']; ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</body>
+</html>
+

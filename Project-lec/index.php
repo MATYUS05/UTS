@@ -15,7 +15,7 @@
         }
     </style>
 </head>
-<body class="font-[Poppins] bg-cover bg-center h-screen"">
+<body class="font-[Poppins] bg-cover bg-center h-screen" style="background-image: url('Image/login.webp');">
     <header class="bg-white">
         <nav class="flex items-center justify-between h-20 w-9/12 mx-auto relative">
             <div> 
@@ -40,7 +40,7 @@
                         <a class="px-4 py-1 text-blue-800 hover:text-blue-300 transition ease-in-out delay-75" href="#">Contact</a>
                     </li>
                     <li>
-                        <a href="user/login.php">
+                        <a href="auth/login.php">
                         <button class="border-2 border-indigo-600 px-4 py-1 rounded-full hover:border-blue-300 transition ease-in-out delay-100">Login</button>
                         </a>
                     </li>
@@ -52,7 +52,7 @@
         <h1 class="text-5xl font-bold text-blue-800 text-outline mb-4">SELAMAT DATANG DI GATHERCRAFT</h1>
         <p class="text-2xl text-blue-800 text-outline mb-2"><span class="auto-type"></span></p>
         <p class="mt-4 mb-4 text-blue-800 text-outline">Belum ada akun?
-            <a href="user/login.php">
+            <a href="auth/signup.php">
             <button class="border-2 border-indigo-600 px-4 py-1 rounded-full hover:border-blue-300 transition ease-in-out delay-100 text-blue-800 text-outline">Sign Up</button></a> Now!!
         </p>
     </div>

@@ -1,26 +1,16 @@
 <?php
 session_start();
-include __DIR__ . "/config/database.php"; 
+require_once '../config/database.php';
 
-if (!isset($_SESSION['user_logged_in']) || !$_SESSION['user_logged_in']) {
-    header("Location: login.php"); 
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../Project-lec/auth/login.php'); // Redirect to login if not authenticated
+    exit;
 }
 
-$userId = $_SESSION['user_id'];
-
-$stmtUser = $pdo->prepare("SELECT * FROM users WHERE id = ?");
-$stmtUser->execute([$userId]);
-$user = $stmtUser->fetch();
-
-$stmtEvents = $pdo->prepare("SELECT * FROM events");
-$stmtEvents->execute();
-$events = $stmtEvents->fetchAll();
-
-$stmtRegisteredEvents = $pdo->prepare("SELECT events.* FROM events 
-    INNER JOIN event_registrations ON events.id = event_registrations.event_id 
-    WHERE event_registrations.user_id = ?");
-$stmtRegisteredEvents->execute([$userId]);
-$registeredEvents = $stmtRegisteredEvents->fetchAll();
+$stmt = $pdo->prepare("SELECT * FROM events");
+$stmt->execute();
+$events = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>

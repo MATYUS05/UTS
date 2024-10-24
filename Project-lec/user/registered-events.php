@@ -1,9 +1,9 @@
 <?php
 session_start();
-include __DIR__ . "/config/database.php"; // Pastikan path ini benar 
+require_once '../config/database.php';
 
 if (!isset($_SESSION['user_logged_in'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 

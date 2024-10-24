@@ -1,16 +1,15 @@
 <?php
-include __DIR__ . "/config/database.php"; // Pastikan path ini benar 
 session_start();
+require_once '../config/database.php';
 
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
-    header("Location: ../user/login.php");
-    exit();
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: ../Project-lec/auth/login.php'); // Redirect if not logged in as admin
+    exit;
 }
 
-$stmt = $pdo->query("SELECT e.id, e.name, COUNT(r.id) AS registrants_count
-                     FROM events e
-                     LEFT JOIN registrations r ON e.id = r.event_id
-                     GROUP BY e.id");
+// Fetch events or any other data needed for the admin dashboard
+$stmt = $pdo->prepare("SELECT * FROM events");
+$stmt->execute();
 $events = $stmt->fetchAll();
 ?>
 
