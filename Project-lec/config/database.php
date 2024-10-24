@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';      // Ganti dengan host database Anda
-$db = 'event'; // Ganti dengan nama database Anda
+$db = 'Event'; // Ganti dengan nama database Anda
 $user = 'root';           // Ganti dengan username database Anda
 $pass = '';               // Ganti dengan password database Anda
 $charset = 'utf8mb4';
