@@ -31,3 +31,6 @@ CREATE TABLE registrations (
     ->     image_url VARCHAR(255),
     ->     status ENUM('open', 'closed', 'canceled')
     -> );
+
+INSERT INTO users (username, password, email, role)
+    -> VALUES ('admin', 'admin123456789', 'admin@example.com', 'admin');
