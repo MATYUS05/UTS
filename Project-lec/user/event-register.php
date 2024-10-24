@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../config/database.php';
+include __DIR__ . "/config/database.php"; // Pastikan path ini benar 
 
 if (isset($_GET['id']) && isset($_SESSION['user_id'])) {
     $eventId = $_GET['id'];

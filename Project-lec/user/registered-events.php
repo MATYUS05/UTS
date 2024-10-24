@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../config/database.php';
+include __DIR__ . "/config/database.php"; // Pastikan path ini benar 
 
 if (!isset($_SESSION['user_logged_in'])) {
     header("Location: login.php");

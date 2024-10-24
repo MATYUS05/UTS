@@ -1,5 +1,5 @@
 <?php
-require '../config/database.php';
+include __DIR__ . "/config/database.php"; // Pastikan path ini benar 
 session_start();
 
 if (!isset($_SESSION['user_id'])) {

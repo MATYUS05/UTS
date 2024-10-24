@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../config/database.php';
+include __DIR__ . "/config/database.php"; // Pastikan path ini benar 
 
 
 $stmt = $pdo->prepare("SELECT * FROM events");
