@@ -1,3 +1,21 @@
+<?php
+session_start();
+include __DIR__ . "/config/database.php"; // Pastikan path ini benar
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = htmlspecialchars(trim($_POST['name']));
+    $email = htmlspecialchars(trim($_POST['email']));
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+    // Simpan pengguna ke database
+    $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+    $stmt->execute([$name, $email, $password]);
+
+    // Redirect ke halaman login setelah berhasil registrasi
+    header("Location: login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +59,7 @@
 
                 <div class="mt-1 text-xs flex items-center justify-between">
                     <p>Login sekarang</p>
-                    <a href="login.html">
+                    <a href="login.php">
                         <button class="py-2 px-5 bg-white border rounded-xl hover:bg-blue-600 hover:text-white transition ease-in-out delay-75">Login</button>
                     </a>
                 </div>
