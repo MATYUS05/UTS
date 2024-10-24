@@ -1,11 +1,26 @@
 <?php
 session_start();
-include __DIR__ . "/config/database.php"; // Pastikan path ini benar 
+include __DIR__ . "/config/database.php"; 
 
+if (!isset($_SESSION['user_logged_in']) || !$_SESSION['user_logged_in']) {
+    header("Location: login.php"); 
+}
 
-$stmt = $pdo->prepare("SELECT * FROM events");
-$stmt->execute();
-$events = $stmt->fetchAll();
+$userId = $_SESSION['user_id'];
+
+$stmtUser = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+$stmtUser->execute([$userId]);
+$user = $stmtUser->fetch();
+
+$stmtEvents = $pdo->prepare("SELECT * FROM events");
+$stmtEvents->execute();
+$events = $stmtEvents->fetchAll();
+
+$stmtRegisteredEvents = $pdo->prepare("SELECT events.* FROM events 
+    INNER JOIN event_registrations ON events.id = event_registrations.event_id 
+    WHERE event_registrations.user_id = ?");
+$stmtRegisteredEvents->execute([$userId]);
+$registeredEvents = $stmtRegisteredEvents->fetchAll();
 ?>
 
 <!DOCTYPE html>
