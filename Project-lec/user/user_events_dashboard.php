@@ -71,7 +71,7 @@ $events = $stmt->fetchAll();
 
                     <!-- ini sample cardnya -->
                     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                        <img src="https://via.placeholder.com/400x200" alt="Event Image" class="w-full h-48 object-cover">
+                        <img src="../Image/music.jpg" alt="Event Image" class="w-full h-48 object-cover">
                         <div class="p-4 md:p-6">
                             <h4 class="text-lg md:text-xl font-semibold mb-2">Music Festival 2024</h4>
                             <p class="text-gray-600 mb-4">Join us for an unforgettable evening of live music, food, and fun!</p>
@@ -83,7 +83,7 @@ $events = $stmt->fetchAll();
 
                     <!-- sample tambahan -->
                     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                        <img src="https://via.placeholder.com/400x200" alt="Event Image" class="w-full h-48 object-cover">
+                        <img src="../image/th.jpeg" alt="Event Image" class="w-full h-48 object-cover">
                         <div class="p-4 md:p-6">
                             <h4 class="text-lg md:text-xl font-semibold mb-2">Art Exhibition 2024</h4>
                             <p class="text-gray-600 mb-4">Explore contemporary artworks from various artists.</p>
