@@ -32,5 +32,12 @@ CREATE TABLE registrations (
     ->     status ENUM('open', 'closed', 'canceled')
     -> );
 
-INSERT INTO users (username, password, email, role)
-    -> VALUES ('admin', 'admin123456789', 'admin@example.com', 'admin');
+
+    CREATE TABLE registrants (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    event_id INT NOT NULL,
+    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+);
