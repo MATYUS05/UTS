@@ -27,12 +27,15 @@ $stmt = $pdo->prepare("SELECT * FROM users");
 $stmt->execute();
 $users = $stmt->fetchAll();
 
-
 // Fungsi untuk menghapus event
 if (isset($_GET['delete_event_id'])) {
     $event_id = $_GET['delete_event_id'];
+
+    // Hapus event dan semua registrasi terkait
     $stmt = $pdo->prepare("DELETE FROM events WHERE id = :id");
     $stmt->execute(['id' => $event_id]);
+
+    // Redirect ke halaman dashboard
     header("Location: admin_dashboard.php");
     exit;
 }

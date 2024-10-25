@@ -29,11 +29,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $check_stmt->execute([$userId, $eventId]);
 
         if ($check_stmt->rowCount() === 0) {
-            // Jika belum terdaftar, tambahkan ke registrants
-            $insert_sql = "INSERT INTO registrants (user_id, event_id) VALUES (?, ?)";
-            $insert_stmt = $pdo->prepare($insert_sql);
-            $insert_stmt->execute([$userId, $eventId]);
-            $message = 'Successfully registered for the event!';
+            // Memastikan event_id valid
+            $event_check_sql = "SELECT id FROM events WHERE id = ?";
+            $event_check_stmt = $pdo->prepare($event_check_sql);
+            $event_check_stmt->execute([$eventId]);
+
+            if ($event_check_stmt->rowCount() > 0) {
+                // Jika valid, lakukan insert ke registrants
+                try {
+                    $insert_sql = "INSERT INTO registrants (user_id, event_id) VALUES (?, ?)";
+                    $insert_stmt = $pdo->prepare($insert_sql);
+                    $insert_stmt->execute([$userId, $eventId]);
+                    $message = 'Successfully registered for the event!';
+                } catch (PDOException $e) {
+                    $message = 'Error: ' . $e->getMessage();
+                }
+            } else {
+                $message = 'Event ID is invalid. Please select a valid event.';
+            }
         } else {
             $message = 'You are already registered for this event.';
         }
@@ -100,7 +113,6 @@ $events = $eventsStmt->fetchAll();
             <div id="profile" class="mb-12 pt-16 -mt-16">
                 <h3 class="text-xl md:text-2xl font-semibold mb-6">Profile</h3>
 
-                
                 <!-- Profile Update Form -->
                 <form method="POST" action="">
                     <div class="mb-4">
@@ -119,57 +131,55 @@ $events = $eventsStmt->fetchAll();
                 </form>
             </div>
 
-                            <!-- Registered Events Section -->
-                    <div id="registered-events" class="mb-12 pt-16 -mt-16">
-                        <h3 class="text-xl md:text-2xl font-semibold mb-6">Registered Events</h3>
-                        <ul id="registered-events-list">
-                            <?php if (count($registeredEvents) > 0): ?>
-                                <?php foreach ($registeredEvents as $event): ?>
-                                    <li class="bg-white shadow-md rounded-lg p-4 mb-4" id="event-<?php echo $event['id']; ?>">
-                                        <h4 class="text-lg font-semibold"><?php echo htmlspecialchars($event['event_name']); ?></h4>
-                                        <p>Date: <?php echo htmlspecialchars($event['event_date']); ?></p>
-                                        <p>Location: <?php echo htmlspecialchars($event['location']); ?></p>
-                                        <button class="text-red-500 cancel-registration" data-id="<?php echo $event['id']; ?>">Cancel Registration</button>
-                                    </li>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                    <p class="text-gray-600">You have not registered for any events yet. Check out our <a href="event-browsing.php" class="text-blue-600">available events</a>!</p>
-                            <?php endif; ?>
-                            
-                        </ul>
-                    </div>
+            <!-- Registered Events Section -->
+            <div id="registered-events" class="mb-12 pt-16 -mt-16">
+                <h3 class="text-xl md:text-2xl font-semibold mb-6">Registered Events</h3>
+                <ul id="registered-events-list">
+                    <?php if (count($registeredEvents) > 0): ?>
+                        <?php foreach ($registeredEvents as $event): ?>
+                            <li class="bg-white shadow-md rounded-lg p-4 mb-4" id="event-<?php echo $event['id']; ?>">
+                                <h4 class="text-lg font-semibold"><?php echo htmlspecialchars($event['event_name']); ?></h4>
+                                <p>Date: <?php echo htmlspecialchars($event['event_date']); ?></p>
+                                <p>Location: <?php echo htmlspecialchars($event['location']); ?></p>
+                                <button class="text-red-500 cancel-registration" data-id="<?php echo $event['id']; ?>">Cancel Registration</button>
+                            </li>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="text-gray-600">You have not registered for any events yet. Check out our <a href="event-browsing.php" class="text-blue-600">available events</a>!</p>
+                    <?php endif; ?>
+                </ul>
+            </div>
 
-                    <script>
-                        // Menggunakan event delegation untuk menangani click event pada tombol cancel
-                        document.getElementById('registered-events-list').addEventListener('click', function(e) {
-                            if (e.target.classList.contains('cancel-registration')) {
-                                const eventId = e.target.getAttribute('data-id');
+            <script>
+                // Menggunakan event delegation untuk menangani click event pada tombol cancel
+                document.getElementById('registered-events-list').addEventListener('click', function(e) {
+                    if (e.target.classList.contains('cancel-registration')) {
+                        const eventId = e.target.getAttribute('data-id');
 
-                                // AJAX request untuk membatalkan pendaftaran
-                                fetch('event-unregister.php?id=' + eventId, {
-                                    method: 'GET',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                    }
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        // Hapus elemen acara dari daftar
-                                        const eventElement = document.getElementById('event-' + eventId);
-                                        eventElement.remove();
-                                    } else {
-                                        alert(data.message || 'Failed to cancel registration. Please try again.');
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Error:', error);
-                                    alert('An error occurred. Please try again.');
-                                });
+                        // AJAX request untuk membatalkan pendaftaran
+                        fetch('event-unregister.php?id=' + eventId, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
                             }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Hapus elemen acara dari daftar
+                                const eventElement = document.getElementById('event-' + eventId);
+                                eventElement.remove();
+                            } else {
+                                alert(data.message || 'Failed to cancel registration. Please try again.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred. Please try again.');
                         });
-                    </script>
-                    
+                    }
+                });
+            </script>
 
             <!-- Event Browsing Section -->
             <div id="event-browsing" class="mb-12 pt-16 -mt-16">
@@ -177,8 +187,8 @@ $events = $eventsStmt->fetchAll();
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <?php foreach ($events as $event): ?>
                         <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                            <?php if (!empty($event['image'])): ?>
-                                <img src="../uploads/<?php echo htmlspecialchars($event['image']); ?>" alt="Event Image" class="w-full h-48 object-cover">
+                            <?php if (!empty($event['image_url'])): ?>
+                                <img src="<?php echo htmlspecialchars($event['image_url']); ?>" alt="<?php echo htmlspecialchars($event['event_name']); ?>" class="w-full h-48 object-cover">
                             <?php else: ?>
                                 <img src="../path/to/default-image.jpg" alt="Default Event Image" class="w-full h-48 object-cover">
                             <?php endif; ?>
@@ -196,18 +206,9 @@ $events = $eventsStmt->fetchAll();
                     <?php endforeach; ?>
                 </div>
             </div>
+
+
         </div>
     </div>
-
-    <script>
-        // Script untuk scroll ke bagian tertentu
-        document.querySelectorAll('.scroll-link').forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                const sectionId = this.getAttribute('data-section');
-                document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-    </script>
 </body>
 </html>
