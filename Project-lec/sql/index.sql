@@ -45,3 +45,8 @@ CREATE TABLE registrations (
 ALTER TABLE events ADD COLUMN location VARCHAR(255);
 
 ALTER TABLE events ADD COLUMN image VARCHAR(255);
+
+ALTER TABLE registrations DROP FOREIGN KEY registrations_ibfk_2;
+
+ALTER TABLE registrations
+ADD CONSTRAINT registrations_ibfk_2 FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE;
