@@ -67,3 +67,45 @@ CREATE TABLE export_registrants (
     FOREIGN KEY (user_id) REFERENCES users(id),  -- Mengacu ke tabel users
     FOREIGN KEY (event_id) REFERENCES events(id)  -- Mengacu ke tabel events
 );
+
+
+ALTER TABLE registrations
+    -> ADD COLUMN user_name VARCHAR(255);
+
+    ALTER TABLE users ADD COLUMN image_url VARCHAR(255) NULL;
+
+     ALTER TABLE events DROP COLUMN image_url;
+
+     ALTER TABLE events ADD COLUMN image_url VARCHAR(255) AFTER max_participants;
+ALTER TABLE users
+    -> ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+
+    ALTER TABLE events
+    -> ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+    ALTER TABLE events
+    -> ADD COLUMN registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+
+    SELECT
+    ->     registrations.id,
+    ->     registrations.user_id,
+    ->     registrations.event_id,
+    ->     registrations.registration_date,
+    -> users.email,
+    ->     users.username
+    -> FROM registrations
+    -> JOIN users ON registrations.user_id = users.id;
+
+
+
+    SELECT
+    ->     r.user_id,
+    ->     r.event_id,
+    ->     r.registration_date,
+    ->     u.username as user_name,
+    ->     u.email
+    -> FROM registrations r
+    -> INNER JOIN users u ON r.user_id = u.id;
+    
