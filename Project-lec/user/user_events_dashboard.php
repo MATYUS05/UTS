@@ -190,7 +190,7 @@ $events = $eventsStmt->fetchAll();
                             <?php if (!empty($event['image_url'])): ?>
                                 <img src="<?php echo htmlspecialchars($event['image_url']); ?>" alt="<?php echo htmlspecialchars($event['event_name']); ?>" class="w-full h-48 object-cover">
                             <?php else: ?>
-                                <img src="../path/to/default-image.jpg" alt="Default Event Image" class="w-full h-48 object-cover">
+                                <img src="../uploads/concert-4768496_1280.jpg" alt="Default Event Image" class="w-full h-48 object-cover">
                             <?php endif; ?>
                             <div class="p-4 md:p-6">
                                 <h4 class="text-lg md:text-xl font-semibold mb-2"><?php echo htmlspecialchars($event['event_name']); ?></h4>

@@ -4,25 +4,26 @@ require_once '../config/database.php';
 
 // Cek apakah user sudah login
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'User not logged in']);
+    echo json_encode(['success' => false, 'message' => 'User not logged in.']);
     exit();
 }
 
 $userId = $_SESSION['user_id'];
 
-// Pastikan ID acara ada dalam parameter URL
 if (isset($_GET['id'])) {
     $eventId = $_GET['id'];
 
-    // Hapus pendaftaran dari tabel registrants
+    // Hapus dari registrants
     $delete_sql = "DELETE FROM registrants WHERE user_id = ? AND event_id = ?";
     $delete_stmt = $pdo->prepare($delete_sql);
+    
     if ($delete_stmt->execute([$userId, $eventId])) {
-        echo json_encode(['success' => true, 'message' => 'Successfully unregistered from the event!']);
+        // Kirimkan respons sukses
+        echo json_encode(['success' => true, 'message' => 'You have successfully canceled your registration for the event.']);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to unregister from the event.']);
+        echo json_encode(['success' => false, 'message' => 'Failed to cancel registration.']);
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Event ID not provided.']);
+    echo json_encode(['success' => false, 'message' => 'No event ID provided.']);
 }
 ?>
