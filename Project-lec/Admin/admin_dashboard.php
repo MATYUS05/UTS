@@ -124,33 +124,38 @@ if (isset($_GET['delete_event_id'])) {
                         <a href="edit_event.php?id=<?php echo $event['id']; ?>" class="text-blue-600 hover:underline">Edit</a>
                         <a href="?delete_event_id=<?php echo $event['id']; ?>" class="text-red-600 hover:underline ml-4" onclick="return confirm('Are you sure you want to delete this event?');">Delete</a>
                     </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-
-            <!-- View Event Registrations Section -->
-            <div id="view-registrations" class="mb-12">
-                <h3 class="text-2xl font-semibold mb-6">View Event Registrations</h3>
-                <p>See who has registered for each event and export the list of registrants.</p>
-                <td class="border border-gray-300 px-4 py-2 flex space-x-2">
-                    <a href="export_registrants.php?event_id=<?php echo $event['id']; ?>" class="bg-green-600 text-white py-1 px-2 rounded">Export Registrants to CSV</a>
-                </td>   
-             </div>
-
-            <!-- User Management Section -->
-            <div id="user-management" class="mb-12">
-                <h3 class="text-2xl font-semibold mb-6">User Management</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Loop through users -->
-                    <?php foreach ($users as $user): ?>
-                    <div class="bg-white shadow-lg rounded-lg p-6">
-                        <h4 class="text-lg font-semibold mb-2"><?php echo htmlspecialchars($user['username']); ?></h4>
-                        <p class="text-gray-600 mb-4">Email: <?php echo htmlspecialchars($user['email']); ?></p>
-                        <a href="delete_user.php?id=<?php echo $user['id']; ?>" class="text-red-600 hover:underline" onclick="return confirm('Are you sure you want to delete this user?');">Delete User</a>
+                        <?php endforeach; ?>
                     </div>
-                    <?php endforeach; ?>
                 </div>
-            </div>
+
+                <!-- View Event Registrations Section -->
+                    <div id="view-registrations" class="mb-12">
+                        <h3 class="text-2xl font-semibold mb-6">View Event Registrations</h3>
+                        <p>See who has registered for each event and export the list of registrants.</p>
+                        
+                        <?php foreach ($events as $event): ?>
+                            <div class="mb-4 p-4 bg-white shadow-md rounded">
+                                <h4 class="font-semibold text-lg"><?php echo htmlspecialchars($event['event_name']); ?></h4>
+                                <p>Date: <?php echo htmlspecialchars($event['event_date']); ?></p>
+                                <a href="export_registrants.php?event_id=<?php echo $event['id']; ?>" class="bg-green-600 text-white py-1 px-2 rounded">Export Registrants to CSV</a>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                <!-- User Management Section -->
+                <div id="user-management" class="mb-12">
+                    <h3 class="text-2xl font-semibold mb-6">User Management</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Loop through users -->
+                        <?php foreach ($users as $user): ?>
+                        <div class="bg-white shadow-lg rounded-lg p-6">
+                            <h4 class="text-lg font-semibold mb-2"><?php echo htmlspecialchars($user['username']); ?></h4>
+                            <p class="text-gray-600 mb-4">Email: <?php echo htmlspecialchars($user['email']); ?></p>
+                            <a href="delete_user.php?id=<?php echo $user['id']; ?>" class="text-red-600 hover:underline" onclick="return confirm('Are you sure you want to delete this user?');">Delete User</a>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
         </div>
     </div>
 </body>
