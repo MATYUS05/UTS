@@ -41,3 +41,7 @@ CREATE TABLE registrations (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
 );
+
+ALTER TABLE events ADD COLUMN location VARCHAR(255);
+
+ALTER TABLE events ADD COLUMN image VARCHAR(255);
