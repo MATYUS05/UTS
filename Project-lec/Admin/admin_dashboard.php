@@ -110,34 +110,7 @@ if (isset($_GET['delete_event_id'])) {
                             <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded">Create Event</button>
                         </form>
                     </div>
-                    <div id="event-management" class="mb-12">
-                        <div class="bg-white p-8 rounded-lg shadow-lg  rounded-lg p-6">
-                            <h3 class="text-lg font-semibold mb-4">Edit Event</h3>
-                            <form action="edit_event.php?id=<?php echo $event_id; ?>" method="POST">
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700">Event Name</label>
-                                        <input type="text" name="event_name" value="<?php echo htmlspecialchars($event['name']); ?>" class="w-full border-2 border-gray-300 rounded-md p-2">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700">Date</label>
-                                        <input type="date" name="event_date" value="<?php echo htmlspecialchars($event['date']); ?>" class="w-full border-2 border-gray-300 rounded-md p-2">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700">Location</label>
-                                        <input type="text" name="event_location" value="<?php echo htmlspecialchars($event['location']); ?>" class="w-full border-2 border-gray-300 rounded-md p-2">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700">Maximum Participants</label>
-                                        <input type="number" name="max_participants" value="<?php echo htmlspecialchars($event['max_participants']); ?>" class="w-full border-2 border-gray-300 rounded-md p-2">
-                                    </div>
-                                </div>
-                                <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded mt-4">Update Event</button>
-                            </form>
-                            <a href="delete_event.php?id=<?php echo $event['id']; ?>" class="bg-red-600 text-white py-2 px-4 rounded mt-4 inline-block">Delete Event</a>
-                        </div>
-                    </div>
-
+                    
                     <!-- Loop through events -->
                     <?php foreach ($events as $event): ?>
                     <div class="bg-white shadow-lg rounded-lg p-6">
@@ -156,8 +129,10 @@ if (isset($_GET['delete_event_id'])) {
             <div id="view-registrations" class="mb-12">
                 <h3 class="text-2xl font-semibold mb-6">View Event Registrations</h3>
                 <p>See who has registered for each event and export the list of registrants.</p>
-                <button class="bg-green-600 text-white py-2 px-4 rounded">Export to CSV</button>
-            </div>
+                <td class="border border-gray-300 px-4 py-2 flex space-x-2">
+                    <a href="export_registrants.php?event_id=<?php echo $event['id']; ?>" class="bg-green-600 text-white py-1 px-2 rounded">Export Registrants to CSV</a>
+                </td>   
+             </div>
 
             <!-- User Management Section -->
             <div id="user-management" class="mb-12">
