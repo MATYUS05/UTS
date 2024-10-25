@@ -59,3 +59,11 @@ SELECT
     ->     u.email
     -> FROM registrations r
     -> INNER JOIN users u ON r.user_id = u.id;
+
+CREATE TABLE export_registrants (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    event_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),  -- Mengacu ke tabel users
+    FOREIGN KEY (event_id) REFERENCES events(id)  -- Mengacu ke tabel events
+);
