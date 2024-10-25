@@ -15,7 +15,7 @@
         }
     </style>
 </head>
-<body class="font-[Poppins] bg-cover bg-center h-screen" style="background-image: url('Image/login.webp');">
+<body >
     <header class="bg-white">
         <nav class="flex items-center justify-between h-20 w-9/12 mx-auto relative">
             <div> 
@@ -30,15 +30,6 @@
             </div>
             <div id="menu" class="hidden md:flex md:items-center md:gap-14 absolute md:static top-20 right-0 w-full md:w-auto bg-white z-10">
                 <ul class="flex flex-col md:flex-row items-center gap-4 md:gap-14">
-                    <li>
-                        <a class="px-4 py-1 text-blue-800 hover:text-blue-300 transition ease-in-out delay-75" href="#">Home</a>
-                    </li>
-                    <li>
-                        <a class="px-4 py-1 text-blue-800 hover:text-blue-300 transition ease-in-out delay-75" href="#">About</a>
-                    </li>
-                    <li>
-                        <a class="px-4 py-1 text-blue-800 hover:text-blue-300 transition ease-in-out delay-75" href="#">Contact</a>
-                    </li>
                     <li>
                         <a href="auth/login.php">
                         <button class="border-2 border-indigo-600 px-4 py-1 rounded-full hover:border-blue-300 transition ease-in-out delay-100">Login</button>

@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $eventId = $_POST['register_event_id'];
 
         // Pastikan pengguna belum terdaftar untuk acara ini
-        $check_sql = "SELECT * FROM registrants WHERE user_id = ? AND event_id = ?";
+        $check_sql = "SELECT * FROM export_registrants WHERE user_id = ? AND event_id = ?";
         $check_stmt = $pdo->prepare($check_sql);
         $check_stmt->execute([$userId, $eventId]);
 
@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $event_check_stmt->execute([$eventId]);
 
             if ($event_check_stmt->rowCount() > 0) {
-                // Jika valid, lakukan insert ke registrants
+                // Jika valid, lakukan insert ke export_registrants
                 try {
-                    $insert_sql = "INSERT INTO registrants (user_id, event_id) VALUES (?, ?)";
+                    $insert_sql = "INSERT INTO export_registrants (user_id, event_id) VALUES (?, ?)";
                     $insert_stmt = $pdo->prepare($insert_sql);
                     $insert_stmt->execute([$userId, $eventId]);
                     $message = 'Successfully registered for the event!';
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Ambil event yang didaftarkan pengguna
-$stmt = $pdo->prepare("SELECT e.* FROM events e JOIN registrants r ON e.id = r.event_id WHERE r.user_id = ?");
+$stmt = $pdo->prepare("SELECT e.* FROM events e JOIN export_registrants r ON e.id = r.event_id WHERE r.user_id = ?");
 $stmt->execute([$userId]);
 $registeredEvents = $stmt->fetchAll();
 
@@ -80,6 +80,11 @@ $registeredEvents = $stmt->fetchAll();
 $eventsStmt = $pdo->prepare("SELECT * FROM events ORDER BY event_date DESC");
 $eventsStmt->execute();
 $events = $eventsStmt->fetchAll();
+
+// Ambil event yang sudah lewat untuk history
+$pastEventsStmt = $pdo->prepare("SELECT * FROM events WHERE id IN (SELECT event_id FROM export_registrants WHERE user_id = ?) AND event_date < NOW() ORDER BY event_date DESC");
+$pastEventsStmt->execute([$userId]);
+$pastEvents = $pastEventsStmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -101,6 +106,7 @@ $events = $eventsStmt->fetchAll();
                     <a href="#profile" class="block text-lg py-3 px-4 rounded hover:bg-blue-800 transition duration-200 scroll-link" data-section="profile">Profile</a>
                     <a href="#event-browsing" class="block text-lg py-3 px-4 rounded hover:bg-blue-800 transition duration-200 scroll-link" data-section="event-browsing">Event Browsing</a>
                     <a href="#registered-events" class="block text-lg py-3 px-4 rounded hover:bg-blue-800 transition duration-200 scroll-link" data-section="registered-events">Registered Events</a>
+                    <a href="#event-history" class="block text-lg py-3 px-4 rounded hover:bg-blue-800 transition duration-200 scroll-link" data-section="event-history">Event History</a>
                 </nav>
             </div>
         </div>
@@ -152,7 +158,7 @@ $events = $eventsStmt->fetchAll();
                             </li>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <p class="text-gray-600">You have not registered for any events yet. Check out our <a href="event-browsing.php" class="text-blue-600">available events</a>!</p>
+                        <p class="text-gray-600">You have not registered for any events yet. Check out our <a href="#event-browsing" class="text-blue-600">available events</a>!</p>
                     <?php endif; ?>
                 </ul>
             </div>
@@ -165,24 +171,14 @@ $events = $eventsStmt->fetchAll();
 
                         // AJAX request untuk membatalkan pendaftaran
                         fetch('event-unregister.php?id=' + eventId, {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Hapus elemen acara dari daftar
-                                const eventElement = document.getElementById('event-' + eventId);
-                                eventElement.remove();
-                            } else {
-                                alert(data.message || 'Failed to cancel registration. Please try again.');
-                            }
-                        })
-                        .catch(error => {
+                            method: 'POST'
+                        }).then(response => {
+                            return response.text();
+                        }).then(data => {
+                            alert(data);
+                            document.getElementById('event-' + eventId).remove();
+                        }).catch(error => {
                             console.error('Error:', error);
-                            alert('An error occurred. Please try again.');
                         });
                     }
                 });
@@ -191,30 +187,38 @@ $events = $eventsStmt->fetchAll();
             <!-- Event Browsing Section -->
             <div id="event-browsing" class="mb-12 pt-16 -mt-16">
                 <h3 class="text-xl md:text-2xl font-semibold mb-6">Event Browsing</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <ul>
                     <?php foreach ($events as $event): ?>
-                        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                            <?php if (!empty($event['image_url'])): ?>
-                                <img src="<?php echo htmlspecialchars($event['image_url']); ?>" alt="<?php echo htmlspecialchars($event['event_name']); ?>" class="w-full h-48 object-cover">
-                            <?php else: ?>
-                                <img src="../uploads/concert-4768496_1280.jpg" alt="Default Event Image" class="w-full h-48 object-cover">
-                            <?php endif; ?>
-                            <div class="p-4 md:p-6">
-                                <h4 class="text-lg md:text-xl font-semibold mb-2"><?php echo htmlspecialchars($event['event_name']); ?></h4>
-                                <p class="text-gray-600 mb-4">Join us for an unforgettable experience!</p>
-                                <p class="text-gray-500 text-sm mb-2">Date: <?php echo htmlspecialchars($event['event_date']); ?></p>
-                                <p class="text-gray-500 text-sm mb-4">Location: <?php echo htmlspecialchars($event['location']); ?></p>
-                                <form method="POST" action="">
-                                    <input type="hidden" name="register_event_id" value="<?php echo $event['id']; ?>">
-                                    <button type="submit" class="bg-green-500 text-white p-2 rounded-md">Register</button>
-                                </form>
-                            </div>
-                        </div>
+                        <li class="bg-white shadow-md rounded-lg p-4 mb-4">
+                            <h4 class="text-lg font-semibold"><?php echo htmlspecialchars($event['event_name']); ?></h4>
+                            <p>Date: <?php echo htmlspecialchars($event['event_date']); ?></p>
+                            <p>Location: <?php echo htmlspecialchars($event['location']); ?></p>
+                            <form method="POST" action="">
+                                <input type="hidden" name="register_event_id" value="<?php echo $event['id']; ?>">
+                                <button type="submit" class="bg-green-500 text-white p-2 rounded-md">Register for Event</button>
+                            </form>
+                        </li>
                     <?php endforeach; ?>
-                </div>
+                </ul>
             </div>
 
-
+            <!-- Event History Section -->
+            <div id="event-history" class="mb-12 pt-16 -mt-16">
+                <h3 class="text-xl md:text-2xl font-semibold mb-6">Event History</h3>
+                <ul>
+                    <?php if (count($pastEvents) > 0): ?>
+                        <?php foreach ($pastEvents as $event): ?>
+                            <li class="bg-white shadow-md rounded-lg p-4 mb-4">
+                                <h4 class="text-lg font-semibold"><?php echo htmlspecialchars($event['event_name']); ?></h4>
+                                <p>Date: <?php echo htmlspecialchars($event['event_date']); ?></p>
+                                <p>Location: <?php echo htmlspecialchars($event['location']); ?></p>
+                            </li>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="text-gray-600">You have not attended any events yet.</p>
+                    <?php endif; ?>
+                </ul>
+            </div>
         </div>
     </div>
 </body>

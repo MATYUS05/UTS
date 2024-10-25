@@ -50,3 +50,12 @@ ALTER TABLE registrations DROP FOREIGN KEY registrations_ibfk_2;
 
 ALTER TABLE registrations
 ADD CONSTRAINT registrations_ibfk_2 FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE;
+
+SELECT
+    ->     r.user_id,
+    ->     r.event_id,
+    ->     r.registration_date,
+    ->     u.username as user_name,
+    ->     u.email
+    -> FROM registrations r
+    -> INNER JOIN users u ON r.user_id = u.id;
