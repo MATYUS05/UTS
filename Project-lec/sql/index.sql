@@ -60,22 +60,21 @@ SELECT
      FROM registrations r
      INNER JOIN users u ON r.user_id = u.id;
 
-CREATE TABLE export_registrants (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    event_id INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id),  -- Mengacu ke tabel users
-    FOREIGN KEY (event_id) REFERENCES events(id)  -- Mengacu ke tabel events
-);
 
+<<<<<<< HEAD
 
 ALTER TABLE registrations
     ADD COLUMN user_name VARCHAR(255);
+=======
+    ALTER TABLE registrations
+    -> ADD COLUMN user_name VARCHAR(255);
+>>>>>>> 907367de63bc129368c6a0a4ef6d4cdf71d4f7d2
 
     ALTER TABLE users ADD COLUMN image_url VARCHAR(255) NULL;
 
      ALTER TABLE events DROP COLUMN image_url;
 
+<<<<<<< HEAD
      ALTER TABLE events ADD COLUMN image_url VARCHAR(255) AFTER max_participants;
         ALTER TABLE users
     ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
@@ -109,3 +108,6 @@ ALTER TABLE registrations
      FROM registrations r
      INNER JOIN users u ON r.user_id = u.id;
     
+=======
+     ALTER TABLE events ADD COLUMN image_url VARCHAR(255) AFTER max_participants;
+>>>>>>> 907367de63bc129368c6a0a4ef6d4cdf71d4f7d2
