@@ -62,6 +62,12 @@ if (isset($_GET['delete_event_id'])) {
                     <a href="#view-registrations" class="block text-lg py-3 px-4 rounded hover:bg-blue-800 transition duration-200">View Event Registrations</a>
                     <a href="#user-management" class="block text-lg py-3 px-4 rounded hover:bg-blue-800 transition duration-200">User Management</a>
                 </nav>
+
+                <!-- Logout Button -->
+            <form action="../auth/logout.php" method="POST" class="mt-10">
+                <button type="submit" class="bg-red-600 text-white py-2 px-4 rounded w-full">Logout</button>
+            </form>
+
             </div>
         </div>
 

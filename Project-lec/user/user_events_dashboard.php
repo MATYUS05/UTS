@@ -109,6 +109,13 @@ $events = $eventsStmt->fetchAll();
         <div class="flex-1 w-full md:ml-64 p-4 md:p-8 mt-16 md:mt-0">
             <h2 class="text-2xl md:text-3xl font-semibold">User Dashboard</h2>
 
+            <!-- Tambahkan tombol logout -->
+            <div class="mt-4">
+                <form method="POST" action="../auth/logout.php">
+                    <button type="submit" class="bg-red-500 text-white p-2 rounded-md">Logout</button>
+                </form>
+            </div>
+
             <!-- Profile Section -->
             <div id="profile" class="mb-12 pt-16 -mt-16">
                 <h3 class="text-xl md:text-2xl font-semibold mb-6">Profile</h3>
