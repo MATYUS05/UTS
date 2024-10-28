@@ -11,7 +11,6 @@ if (!isset($_SESSION['user_id'])) {
 $userId = $_SESSION['user_id'];
 $message = '';
 
-// Ambil informasi profil pengguna
 $sql = "SELECT username, email FROM users WHERE id = ?";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$userId]);
@@ -71,17 +70,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Ambil event yang didaftarkan pengguna
 $stmt = $pdo->prepare("SELECT e.* FROM events e JOIN export_registrants r ON e.id = r.event_id WHERE r.user_id = ?");
 $stmt->execute([$userId]);
 $registeredEvents = $stmt->fetchAll();
 
-// Ambil semua event terbaru untuk ditampilkan
 $eventsStmt = $pdo->prepare("SELECT * FROM events ORDER BY event_date DESC");
 $eventsStmt->execute();
 $events = $eventsStmt->fetchAll();
 
-// Ambil event yang sudah lewat untuk history
 $pastEventsStmt = $pdo->prepare("SELECT * FROM events WHERE id IN (SELECT event_id FROM export_registrants WHERE user_id = ?) AND event_date < NOW() ORDER BY event_date DESC");
 $pastEventsStmt->execute([$userId]);
 $pastEvents = $pastEventsStmt->fetchAll();
